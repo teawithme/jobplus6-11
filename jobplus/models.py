@@ -12,10 +12,13 @@ class Base(db.Model):
             onupdate=datetime.utcnow)
 
 class User(Base):
+    __tablename__ = 'user'
     pass
 
 class Job(Base):
+    __tablename__ = 'job'
     pass
 
 class Company():
+    __tablename__ = 'company'
     pass
