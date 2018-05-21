@@ -13,12 +13,16 @@ class Base(db.Model):
 
 class User(Base):
     __tablename__ = 'user'
+    
+    ROLE_USER = 10
+    ROLE_ADMIN = 20
+    
     pass
 
 class Job(Base):
     __tablename__ = 'job'
     pass
 
-class Company():
+class Company(Base):
     __tablename__ = 'company'
     pass
