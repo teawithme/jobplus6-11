@@ -1,6 +1,7 @@
 from flask_wtf import FlaskForm
 from wtforms import StringField,PasswordField,SubmitField
 from wtforms.validators import Length, Email, Required
+from simpledu.models import db, User
 
 class LoginForm(FlaskForm):
     email=StringField('email',validators=[Required(),Email()])
@@ -12,3 +13,19 @@ class LoginForm(FlaskForm):
     	pass
     def validate_password():
     	pass
+
+class UserForm(FlaskForm):
+    name = StringField('姓名', validators=[Required(), Length(5, 32)])
+    email = StringField('邮箱', validators=[Required(), Email()])
+    password = PasswordField('密码', validators=[Required(), Length(6, 24)])
+    repeat_password = PasswordField('重复密码', validators=[Required(), EqualTo('password')])
+    mobile = IntegerField('手机号', validators=[Required(), NumberRange(min=11, message='无效的手机号')])
+    work_year = IntegerField('工作年限', validators=[Required()])
+    resume_url = StringField('简历链接', validators=[Required(), URL()])
+    submit = SubmitField('提交')
+    
+    def update_user(self, user):
+        self.populate_obj(user)
+        db.session.add(user)
+        db.session.commit()
+        return user
