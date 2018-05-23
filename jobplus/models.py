@@ -30,11 +30,11 @@ class User(Base, UserMixin):
     email = db.Column(db.String(64), unique=True, index=True, nullable=False)
     _password = db.Column('password', db.String(256), nullable=False)
     role = db.Column(db.SmallInteger, default=ROLE_USER)
-    work_year = db.Column(db.Integer, nullable=False)
-    mobile = db.Column(db.Integer, unique=True, nullable=False)
-    resume_url = db.Column(db.Sting(256), unique=True, nullable=False)
+    work_year = db.Column(db.Integer)
+    mobile = db.Column(db.Integer, unique=True)
+    resume_url = db.Column(db.String(256), unique=True)
     company_id = db.Column(db.Integer, db.ForeignKey('company.id', ondelete='CASCADE'))
-    company = db.relationship('Company', uselist=False)
+    company = db.relationship('Company')
     
     
     def __repr__(self):
