@@ -1,5 +1,5 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField,PasswordField,SubmitField
+from wtforms import StringField,PasswordField,SubmitField,BooleanField
 from wtforms.validators import Length, Email, Required
 from simpledu.models import db, User
 
@@ -9,10 +9,14 @@ class LoginForm(FlaskForm):
     remember_me = BooleanField('remember_me')
     submit = SubmitField('submit') 
 
-    def validate_email():
-    	pass
-    def validate_password():
-    	pass
+    def validate_email(self, field):
+        if field.data and not User.query.filter_by(email=field.data).first():
+            raise ValidationError('邮箱没有注册！')
+
+    def validate_password(self, field):
+        user = User.query.filter_by(email=self.email.data).first()
+        if user and not user.check_password(field.data):
+            raise ValidationError('密码错误')
 
 class UserForm(FlaskForm):
     name = StringField('姓名', validators=[Required(), Length(5, 32)])
