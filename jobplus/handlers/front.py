@@ -1,6 +1,7 @@
 from flask import Blueprint, redirect, url_for, render_template
 from jobplus.forms import LoginForm
 from flask_login import login_user, login_required
+from jobplus.models import User
 
 front=Blueprint('front',__name__)
 

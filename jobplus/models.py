@@ -80,8 +80,10 @@ class Company(Base):
 
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(128), nullable=False) 
-    description = db.Column(db.String(128))
+    description = db.Column(db.String(256))
     city = db.Column(db.String(64), nullable=False)
+    scale = db.Column(db.String(64))
+    workers_num = db.Column(db.String(32))
     user = db.relationship('User')
     jobs = db.relationship('Job')
 
@@ -91,3 +93,6 @@ class Company(Base):
 
     def __repr__(self):
         return '<Company:{}>'.format(self.name)
+
+class Jobhunter(User):
+    pass

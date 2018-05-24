@@ -3,6 +3,11 @@
   margin: 0 auto;
 }
 
+.form-group {
+  width: 400px;
+  margin: 0 auto;
+}
+
 a,
 a:hover,
 a:visited {

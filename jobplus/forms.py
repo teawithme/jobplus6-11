@@ -1,5 +1,5 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField,PasswordField,SubmitField,BooleanField,IntegerField
+from wtforms import StringField,PasswordField,SubmitField,BooleanField,IntegerField,ValidationError
 from wtforms.validators import Length, Email, Required, EqualTo, NumberRange, URL
 from jobplus.models import db, User
 
@@ -15,7 +15,7 @@ class LoginForm(FlaskForm):
 
     def validate_password(self, field):
         user = User.query.filter_by(email=self.email.data).first()
-        if user and not user.check_password(field.data):
+        if not user: #and not user.check_password(field.data):
             raise ValidationError('密码错误')
 
 class UserForm(FlaskForm):
@@ -33,3 +33,6 @@ class UserForm(FlaskForm):
         db.session.add(user)
         db.session.commit()
         return user
+
+class CompanyProfile(FlaskForm):
+    pass
