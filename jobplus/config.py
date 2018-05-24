@@ -1,5 +1,6 @@
 class BaseConfig(object):
     SECRET_KEY = 'secret key'
+    INDEX_PER_PAGE = 9
 
 class DevelopmentConfig(BaseConfig):
     DEBUG = True
