@@ -82,11 +82,12 @@ class Company(Base):
     __tablename__ = 'company'
 
     id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(128), nullable=False) 
     description = db.Column(db.String(256))
-    city = db.Column(db.String(64), nullable=False)
+    location = db.Column(db.String(64), nullable=False)
     scale = db.Column(db.String(64))
     workers_num = db.Column(db.String(32))
+    logo = db.Column(db.String(256), nullable=False)
+    user_id = db.Column(db.Integer)
     user = db.relationship('User')
     jobs = db.relationship('Job')
 
@@ -95,7 +96,4 @@ class Company(Base):
         return url_for('company.index', company_id=self.id)
 
     def __repr__(self):
-        return '<Company:{}>'.format(self.name)
-
-class Jobhunter(User):
-    pass
+        return '<Company: {}>'.format(self.name)

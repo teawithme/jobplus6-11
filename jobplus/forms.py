@@ -1,7 +1,7 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField,PasswordField,SubmitField,BooleanField,IntegerField,ValidationError
+from wtforms import StringField,PasswordField,SubmitField,BooleanField,IntegerField,ValidationError, SelectField
 from wtforms.validators import Length, Email, Required, EqualTo, NumberRange, URL
-from jobplus.models import db, User
+from jobplus.models import db, User, Company
 
 class LoginForm(FlaskForm):
     email=StringField('email',validators=[Required(),Email()])
@@ -34,5 +34,31 @@ class UserForm(FlaskForm):
         db.session.commit()
         return user
 
-class CompanyProfile(FlaskForm):
-    pass
+class CompanyForm(FlaskForm):
+    name = StringField('企业名称', validators=[Required()])
+    email = StringField('企业邮箱', validators=[Required(), Email()])
+    password = PasswordField('密码(不填则保持不变)')
+    description = StringField('简要描述', validators=[Required(), Length(8,150)])
+    location = StringField('企业地址', validators=[Required()])
+    workers_num = SelectField('企业规模', choices=[('small','1~50'),('middle','51~100'),('big','101~200'), ('huge','200+')])
+    logo = StringField('LOGO', validators=[Required(), URL()])
+    submit = SubmitField('提交')
+
+    def update_profile(self, user):
+        user.name = self.name.data
+        user.email = self.email.data
+        
+        #如果密码填写了就要改变密码
+        if self.password.data:
+            user.password = self.password.data
+
+        #先判断公司数据是否是第一次建立
+        if user.company:
+            company = user.company
+        else:
+            company = Company()
+            company.user_id = user.id
+        self.populate_obj(obj=company)
+        db.session.add(user)
+        db.session.add(company)
+        db.session.commit()
