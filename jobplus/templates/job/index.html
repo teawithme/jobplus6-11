@@ -8,12 +8,15 @@
     {% for job in pagination.items %}
     <div class="col-sm-6 col-md-4 course">
         <div class="thumbnail">
-            <a href="{{ job.url }}" target="_blank">
-                <div class="caption">
+            <div class="caption">
+                <a href="{{ job.url }}" target="_blank">
                     <h4 class="job__name">{{ job.title }}</h4>
-                    <p class="job__company">{{ job.company.name }}</p>
-                </div>
-            </a>
+                </a>
+                <p class="job__salary">{{ job.salary }}</p>
+                <p class="job__location">{{ job.location }}</p>
+                <p class="job__company">{{ job.company.name }}</p>
+                <p class="job__created_at">{{ job.created_at }}</p>
+            </div>
         </div>
     </div>
     {% endfor %}

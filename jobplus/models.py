@@ -65,13 +65,16 @@ class Job(Base):
     
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(128), nullable=False)
+    salary = db.Column(db.String(32), nullable=False)
+    experience = db.Column(db.String(128), default='经验不限')
+    location = db.Column(db.String(128), nullable=False)
     company_id = db.Column(db.Integer, db.ForeignKey('company.id', ondelete='CASCADE'))
     company = db.relationship('Company', uselist=False)
-
+    
     @property
     def url(self):
-        return url_for('company.job', company_id=self.company.id, job_id=self.id)
-
+        return url_for('job.detail', job_id=self.id)
+    
     def __repr__(self):
         return '<Job:{}>'.format(self.name)
 
