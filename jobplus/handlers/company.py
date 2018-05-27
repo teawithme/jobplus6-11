@@ -1,4 +1,4 @@
-#-*- coding:UTF-8 -*-#
+#-*- coding:utf-8 -*-#
 
 from flask import render_template,url_for,Blueprint,flash,redirect,request
 from flask_login import login_required, current_user
@@ -21,12 +21,12 @@ def profile():
         return redirect(url_for('front.index'))
     return render_template('company/profile.html', form=form)
 
-@company.route('/')
+@company.route('/', methods=['GET'])
 def index():
-    page = request.args.get('page', 1, type=int)
+    page = request.args.get('page', default=1, type=int)
     pagination = User.query.filter(User.role==User.ROLE_COMPANY).order_by(User.created_at.desc()).paginate(
             page=page,
             per_page=12,
             error_out=False
             )
-    return render_template('company/index.html', pagination=pagination, active='company')
+    return render_template('company/index.html', pagination=pagination)

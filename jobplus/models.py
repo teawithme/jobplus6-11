@@ -33,12 +33,11 @@ class User(Base, UserMixin):
     work_year = db.Column(db.Integer)
     mobile = db.Column(db.Integer, unique=True)
     resume_url = db.Column(db.String(256), unique=True)
-    company_id = db.Column(db.Integer, db.ForeignKey('company.id', ondelete='CASCADE'))
-    company = db.relationship('Company')
+    company_detail = db.relationship('Company')
     
     
     def __repr__(self):
-        return '<User:{}>'.format(self.username)
+        return '<User:{}>'.format(self.username, uselist=False)
 
     @property
     def password(self):
@@ -91,8 +90,8 @@ class Company(Base):
     field = db.Column(db.String(64))
     finance_stage = db.Column(db.String(64))
     welfares = db.Column(db.String(256))
-    user_id = db.Column(db.Integer)
-    user = db.relationship('User')
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id', ondelete='SET NULL'))
+    user = db.relationship('User', uselist=False, backref=db.backref('company', uselist=False))
     jobs = db.relationship('Job')
 
     @property

@@ -8,43 +8,26 @@
     <div class='search-company'>
         <div class='row'>
             <div class="col-md-10">
-                <input class="form-control" type='company-search' placeholder="searching key word��like python" value=''></input>
+                <input class="form-control" type='company-search' placeholder="输入一个关键字，例如‘python’" value=''></input>
             </div>
             <div class="col-md-2">
-                <button class="btn btn-primary search-btn" type='button'>search</button>
+                <button class="btn btn-primary search-btn" type='button'>搜索</button>
             </div>
         </div>
     </div>
-</div>
-    <h1 class="h4 mt30 nav-title">company list</h1>
+    <h1 class="nav nav-tabs">企业列表</h1>
     <div class="company-list">
-        {% for user in pagination.items %}
-        <div class="row" style="margin-right: 0px;">
-            <div class="media">
-                <div class="col-md-9">
-                    <div class="pull-left">
-                        <a class="company-logo" style="background-image: url({{ user.company.logo }});" href="{{ user.company.url }}"></a>
-                    </div>
-                    <h4 class="media-heading" style="padding-left: 12px;">
-                        <a href='#'>{{ user.name }}</a>
-                    </h4>
-                    <a class="company-site" href="{{ user.company.url }}" target="_blank" rel="nofollow">{{ user.company.url }}</a>
-                    <p class="company-desc">{{ user.company.description }}</p>
-                    <ul class="taglist--inline ib">
-                        {% for tag in user.company.tags.split(' ') %}
-                        <li>{{ tag }}</li>
-                        {% endfor %}
-                </div>
-                <div class="col-md-3">
-					<ul class="company-simple-info">
-						<li>{{ user.company.job.count() }}</li>
-						<li>{{ user.company.location }}</li>
-						<li>{{ user.company.finance_stage }}</li>
-					</ul>
-                </div>
-	    	</div>
+        {% for company in pagination.items %}    
+        <div class="col-sm-6 col-md-3 user-item">
+          <div class="thumbnail">
+              <img src="{{ company.company_detail.logo }}" width="100" height="100" alt="...">
+              <h3>{{ company.name }}</h3>
+              <p>{{ company.company_detail.field }}</p>
+          <hr>
+          <p>在招职位：</p>
+          </div>
         </div>
-		{% endfor %}
+        {% endfor %}
     </div>
 </div>
 {{ render_pagination(pagination, 'company.index') }}
