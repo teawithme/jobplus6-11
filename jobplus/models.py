@@ -93,7 +93,7 @@ class Company(Base):
 
     @property
     def url(self):
-        return url_for('company.index', company_id=self.id)
+        return url_for('company.profile', company_id=self.id)
 
     def __repr__(self):
         return '<Company: {}>'.format(self.name)
