@@ -42,6 +42,10 @@ class CompanyForm(FlaskForm):
     location = StringField('企业地址', validators=[Required()])
     workers_num = SelectField('企业规模', choices=[('small','1~50'),('middle','51~100'),('big','101~200'), ('huge','200+')])
     logo = StringField('LOGO', validators=[Required(), URL()])
+    field = StringField('公司领域', validators=[Required()])
+    tags = StringField('公司技术标签(最多不超过十个，用空格隔开)', validators=[Required()])
+    finance_stage = SelectField('融资进度', choices=[('p','初创企业'), ('a', '融资A轮'), ('b', '融资B轮'), ('c', '融资C轮'),('s','已上市')])
+    welfares = StringField('公司福利(最多不超过十个，用空格隔开)', validators=[Required()])
     submit = SubmitField('提交')
 
     def update_profile(self, user):
