@@ -19,10 +19,10 @@ class LoginForm(FlaskForm):
             raise ValidationError('密码错误')
 
 class UserForm(FlaskForm):
+    username = StringField('Username', validators=[Required(), Length(5, 32)])
     name = StringField('姓名', validators=[Required(), Length(5, 32)])
     email = StringField('邮箱', validators=[Required(), Email()])
     password = PasswordField('密码', validators=[Required(), Length(6, 24)])
-    repeat_password = PasswordField('重复密码', validators=[Required(), EqualTo('password')])
     mobile = IntegerField('手机号', validators=[Required(), NumberRange(min=11, message='无效的手机号')])
     work_year = IntegerField('工作年限', validators=[Required()])
     resume_url = StringField('简历链接', validators=[Required(), URL()])
@@ -66,3 +66,28 @@ class CompanyForm(FlaskForm):
         db.session.add(user)
         db.session.add(company)
         db.session.commit()
+
+class RegisterForm(FlaskForm):
+    username = StringField('Username', validators=[Required(), Length(3, 24)])
+    email = StringField('Email', validators=[Required(), Email()])
+    password = PasswordField('Password', validators=[Required(), Length(6, 24)])
+    repeat_password = PasswordField('Repeat password', validators=[Required(), EqualTo('password')])
+    submit = SubmitField('Submit')
+
+    def validate_username(self, field):
+        if User.query.filter_by(username=field.data).first():
+            raise ValidationError('The name was registered')
+
+    def validate_email(self, field):
+        if User.query.filter_by(email=field.data).first():
+            raise ValidationError('The email was registered')
+
+    def create_user(self):
+        user = User(username=self.username.data,
+                    email=self.email.data,
+                    password=self.password.data)
+        db.session.add(user)
+        db.session.commit()
+        return user
+
+        

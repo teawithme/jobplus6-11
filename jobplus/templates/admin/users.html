@@ -4,9 +4,13 @@
 {% block title %}User manage{% endblock %}
 
 {% block operation %}
-<a href="#" type='button' class='btn btn-primary'>
+<a href="{{ url_for('admin.add_user') }}" type='button' class="btn btn-primary">
     <span class='glyphicon glyphicon-plus' aria-hidden='true'></span>
     Add User
+</a>
+<a href="{{ url_for('admin.add_company') }}" type='button' class="btn btn-primary">
+    <span class='glyphicon glyphicon-plus' aria-hidden='true'></span>
+    Add Company
 </a>
 {% endblock %}
 
@@ -30,7 +34,7 @@
         <tr>
             <td>{{ user.id }}</td>
             <td>{{ user.username }}</td>
-            <td>{% if user.is_company %}{{ Company }}{% else %}{{ User }}{% endif %}</td>
+            <td>{% if user.is_company %}{{ "Company" }}{% else %}{{ "User" }}{% endif %}</td>
             <td>{{ user.name }}</td>
             <td>{{ user.email }}</td>
             <td>{{ user.role }}</td>
