@@ -10,16 +10,23 @@ from jobplus.models import db, User, Job, Company
 def iter_users():
     company = Company.query.filter_by(id=1).first()
     yield User(
-        name='company1',
-        username='ABC',
+        name='admin',
+        username='admin',
+        email='admin@jobplus.com',
+        password='jobplus',
+        role=30
+    )
+    yield User(
+        name='ABC',
+        username='company1',
         email='abc@example.com',
         password='abcdefg',
         role=20,
         company=company
     )
     yield User(
-        name='user1',
-        username='Jack Lee',
+        name='Jack Lee',
+        username='user1',
         email='jacklee@example.com',
         password='protream',
         role=10

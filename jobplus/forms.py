@@ -28,13 +28,22 @@ class UserForm(FlaskForm):
     resume_url = StringField('简历链接', validators=[Required(), URL()])
     submit = SubmitField('提交')
     
-    def update_user(self, user):
+    def add_user(self):
+        user = User()
         self.populate_obj(user)
         db.session.add(user)
         db.session.commit()
         return user
 
+    def update_user(self, user):
+        self.populate_obj(user)
+        db.session.add(user)
+        db.session.commit()
+        return user
+    
+
 class CompanyForm(FlaskForm):
+    username = StringField('用户名', validators=[Required()])
     name = StringField('企业名称', validators=[Required()])
     email = StringField('企业邮箱', validators=[Required(), Email()])
     password = PasswordField('密码(不填则保持不变)')
@@ -47,7 +56,18 @@ class CompanyForm(FlaskForm):
     finance_stage = SelectField('融资进度', choices=[('p','初创企业'), ('a', '融资A轮'), ('b', '融资B轮'), ('c', '融资C轮'),('s','已上市')])
     welfares = StringField('公司福利(最多不超过十个，用空格隔开)', validators=[Required()])
     submit = SubmitField('提交')
-
+    
+    def add_company(self):
+        company = Company()
+        user = User()
+        user.role = 20
+        self.populate_obj(user)
+        self.populate_obj(company)
+        db.session.add(user)
+        db.session.add(company)
+        db.session.commit()
+        return company
+    
     def update_profile(self, user):
         user.name = self.name.data
         user.email = self.email.data
