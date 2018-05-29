@@ -4,10 +4,10 @@ from wtforms.validators import Length, Email, Required, EqualTo, NumberRange, UR
 from jobplus.models import db, User, Company
 
 class LoginForm(FlaskForm):
-    email=StringField('email',validators=[Required(),Email()])
-    password=PasswordField('passowrd',validators=[Required(),Length(6,24)])
-    remember_me = BooleanField('remember_me')
-    submit = SubmitField('submit') 
+    email=StringField('邮箱',validators=[Required(),Email()])
+    password=PasswordField('密码',validators=[Required(),Length(6,24)])
+    remember_me = BooleanField('记住我')
+    submit = SubmitField('提交') 
 
     def validate_email(self, field):
         if field.data and not User.query.filter_by(email=field.data).first():
@@ -19,7 +19,7 @@ class LoginForm(FlaskForm):
             raise ValidationError('密码错误')
 
 class UserForm(FlaskForm):
-    username = StringField('Username', validators=[Required(), Length(5, 32)])
+    username = StringField('用户名', validators=[Required(), Length(5, 32)])
     name = StringField('姓名', validators=[Required(), Length(5, 32)])
     email = StringField('邮箱', validators=[Required(), Email()])
     password = PasswordField('密码', validators=[Required(), Length(6, 24)])
@@ -51,6 +51,7 @@ class CompanyForm(FlaskForm):
     location = StringField('企业地址', validators=[Required()])
     workers_num = SelectField('企业规模', choices=[('small','1~50'),('middle','51~100'),('big','101~200'), ('huge','200+')])
     logo = StringField('LOGO', validators=[Required(), URL()])
+    site = StringField('企业网址', validators=[URL()])
     field = StringField('公司领域', validators=[Required()])
     tags = StringField('公司技术标签(最多不超过十个，用空格隔开)', validators=[Required()])
     finance_stage = SelectField('融资进度', choices=[('p','初创企业'), ('a', '融资A轮'), ('b', '融资B轮'), ('c', '融资C轮'),('s','已上市')])
@@ -88,19 +89,19 @@ class CompanyForm(FlaskForm):
         db.session.commit()
 
 class RegisterForm(FlaskForm):
-    username = StringField('Username', validators=[Required(), Length(3, 24)])
-    email = StringField('Email', validators=[Required(), Email()])
-    password = PasswordField('Password', validators=[Required(), Length(6, 24)])
-    repeat_password = PasswordField('Repeat password', validators=[Required(), EqualTo('password')])
-    submit = SubmitField('Submit')
+    username = StringField('用户名', validators=[Required(), Length(3, 24)])
+    email = StringField('邮箱', validators=[Required(), Email()])
+    password = PasswordField('密码', validators=[Required(), Length(6, 24)])
+    repeat_password = PasswordField('重复密码', validators=[Required(), EqualTo('password')])
+    submit = SubmitField('提交')
 
     def validate_username(self, field):
         if User.query.filter_by(username=field.data).first():
-            raise ValidationError('The name was registered')
+            raise ValidationError('用户名已经被注册')
 
     def validate_email(self, field):
         if User.query.filter_by(email=field.data).first():
-            raise ValidationError('The email was registered')
+            raise ValidationError('邮箱已经被注册')
 
     def create_user(self):
         user = User(username=self.username.data,
@@ -110,4 +111,43 @@ class RegisterForm(FlaskForm):
         db.session.commit()
         return user
 
-        
+class CompanyEditForm(FlaskForm):
+    email = StringField('邮箱', validators=[Required(), Email()])
+    password = PasswordField('密码', validators=[Length(6,24)])
+    name = StringField('企业名称', validators=[Length(3, 24)])
+    mobile = StringField('电话')
+    site = StringField('企业网站', validators=[URL()])
+    description = StringField('企业简介', validators=[Length(6, 128)])
+    submit = SubmitField('保存')
+
+    def update(self, company):
+        company.name = self.name.data
+        company.email = self.email.data
+        company.mobile = self.mobile.data
+
+        if self.password.data:
+            company.password = self.password.data
+
+        if company.company_detail:
+            company_detail = company.company_detail
+        else:
+            company_detail = Company()
+            company_detail.user_id = company.id
+        company_detail.site = self.site.data
+        company_detail.description = self.description.data
+        db.session.add(company)
+        db.session.add(company_detail)
+        db.session.commit()
+
+class UserEditForm(FlaskForm):
+    email = StringField('邮箱', validators=[Required(), Email()])
+    password = PasswordField('密码', validators=[Length(6,24)])
+    name = StringField('姓名', validators=[Length(3, 24)])
+    mobile = StringField('手机')
+    submit = SubmitField('保存')
+
+    def update(self, user):
+        self.populate_obj(user)
+        user.password = self.password.data
+        db.session.add(user)
+        db.session.commit()

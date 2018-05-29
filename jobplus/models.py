@@ -31,9 +31,10 @@ class User(Base, UserMixin):
     _password = db.Column('password', db.String(256), nullable=False)
     role = db.Column(db.SmallInteger, default=ROLE_USER)
     work_year = db.Column(db.Integer)
-    mobile = db.Column(db.Integer)
+    mobile = db.Column(db.String)
     resume_url = db.Column(db.String(256), unique=True)
     company_detail = db.relationship('Company')
+    is_disable = db.Column(db.Boolean, default=False)
     
     
     def __repr__(self):
@@ -82,10 +83,11 @@ class Company(Base):
 
     id = db.Column(db.Integer, primary_key=True)
     description = db.Column(db.String(256))
-    location = db.Column(db.String(64), nullable=False)
+    location = db.Column(db.String(64))
     scale = db.Column(db.String(64))
     workers_num = db.Column(db.String(32))
-    logo = db.Column(db.String(256), nullable=False)
+    logo = db.Column(db.String(256))
+    site = db.Column(db.String(128))
     tags = db.Column(db.String(128))
     field = db.Column(db.String(64))
     finance_stage = db.Column(db.String(64))

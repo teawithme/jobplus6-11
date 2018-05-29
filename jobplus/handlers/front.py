@@ -1,4 +1,4 @@
-from flask import Blueprint, redirect, url_for, render_template
+from flask import Blueprint, redirect, url_for, render_template, flash
 from jobplus.forms import LoginForm
 from flask_login import login_user, login_required, logout_user
 from jobplus.models import User

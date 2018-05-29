@@ -1,9 +1,9 @@
 {% extends 'admin/admin_base.html' %}
 {% from 'macros.html' import render_form %}
 
-{% block title %}Edit-user{% endblock %}
+{% block title %}用户编辑{% endblock %}
 
 {% block admin %}
-<h4 style='text-align:center'>Edit{% if user.is_company %}Company{% else %}User{% endif %}</h4>
+<h4 style='text-align:center'>编辑{% if user.is_company %}企业{% else %}求职者{% endif %}</h4>
     {{ render_form(form, url_for('admin.edit_user', user_id=user.id)) }}
 {% endblock %}
