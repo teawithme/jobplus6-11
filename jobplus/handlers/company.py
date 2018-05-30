@@ -39,3 +39,4 @@ def index():
 def detail(company_id):
     company = Company.query.get_or_404(company_id)
     return render_template('company/detail.html', company=company)
+

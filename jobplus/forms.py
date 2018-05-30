@@ -88,11 +88,13 @@ class CompanyForm(FlaskForm):
         db.session.add(company)
         db.session.commit()
 
-class RegisterForm(FlaskForm):
+class CompanyRegisterForm(FlaskForm):
     username = StringField('用户名', validators=[Required(), Length(3, 24)])
+    name = StringField('企业名称', validators=[Required(), Length(3, 24)])
     email = StringField('邮箱', validators=[Required(), Email()])
     password = PasswordField('密码', validators=[Required(), Length(6, 24)])
     repeat_password = PasswordField('重复密码', validators=[Required(), EqualTo('password')])
+    location = StringField('所在地', validators=[Required()])
     submit = SubmitField('提交')
 
     def validate_username(self, field):
@@ -103,13 +105,16 @@ class RegisterForm(FlaskForm):
         if User.query.filter_by(email=field.data).first():
             raise ValidationError('邮箱已经被注册')
 
-    def create_user(self):
+    def create_company(self):
         user = User(username=self.username.data,
                     email=self.email.data,
-                    password=self.password.data)
+                    password=self.password.data,
+                    role=20)
+        company = Company(location=self.location.data)
         db.session.add(user)
+        db.session.add(company)
         db.session.commit()
-        return user
+        #return user
 
 class CompanyEditForm(FlaskForm):
     email = StringField('邮箱', validators=[Required(), Email()])
@@ -138,6 +143,31 @@ class CompanyEditForm(FlaskForm):
         db.session.add(company)
         db.session.add(company_detail)
         db.session.commit()
+
+class UserRegisterForm(FlaskForm):
+    username = StringField('用户名', validators=[Required(), Length(3, 24)])
+    name = StringField('姓名', validators=[Required(), Length(3, 24)])
+    email = StringField('邮箱', validators=[Required(), Email()])
+    password = PasswordField('密码', validators=[Required(), Length(6, 24)])
+    repeat_password = PasswordField('重复密码', validators=[Required(), EqualTo('password')])
+    submit = SubmitField('提交')
+
+    def validate_username(self, field):
+        if User.query.filter_by(username=field.data).first():
+            raise ValidationError('用户名已经被注册')
+
+    def validate_email(self, field):
+        if User.query.filter_by(email=field.data).first():
+            raise ValidationError('邮箱已经被注册')
+
+    def create_user(self):
+        user = User(username=self.username.data,
+                    email=self.email.data,
+                    password=self.password.data,
+                    role=10)
+        db.session.add(user)
+        db.session.commit()
+        return user
 
 class UserEditForm(FlaskForm):
     email = StringField('邮箱', validators=[Required(), Email()])

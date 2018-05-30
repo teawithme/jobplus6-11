@@ -1,5 +1,3 @@
-#-*- coding:utf-8 -*-
-
 from flask import Flask
 from jobplus.config import configs
 from jobplus.models import db,User

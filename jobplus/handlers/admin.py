@@ -1,10 +1,10 @@
-# -*- coding:utf-8 -*-
+# -*- coding: utf-8 -*-
 
 from flask import Blueprint, render_template,url_for,request, redirect, flash
 #from flask_login import current_user
 from jobplus.decorators import admin_required
 from jobplus.models import db,User
-from jobplus.forms import UserForm, RegisterForm, CompanyEditForm, UserEditForm
+from jobplus.forms import UserForm, UserRegisterForm, CompanyRegisterForm, CompanyEditForm, UserEditForm
 
 admin = Blueprint('admin', __name__, url_prefix='/admin')
 
@@ -26,7 +26,7 @@ def users():
 @admin.route('/users/adduser', methods=['GET','POST'])
 @admin_required
 def add_user():
-    form = RegisterForm()
+    form = UserRegisterForm()
     if form.validate_on_submit():
         form.create_user()
         flash('增加求职者成功', 'success')
@@ -36,7 +36,7 @@ def add_user():
 @admin.route('/users/addcompany', methods=['GET','POST'])
 @admin_required
 def add_company():
-    form = RegisterForm()
+    form = CompanyRegisterForm()
     if form.validate_on_submit():
         form.create_user()
         flash('增加企业成功', 'success')
