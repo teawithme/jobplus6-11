@@ -8,7 +8,6 @@ from jobplus.models import db, User, Job, Company
 
 
 def iter_users():
-    company = Company.query.filter_by(id=1).first()
     yield User(
         name='admin',
         username='admin',
@@ -21,8 +20,7 @@ def iter_users():
         username='company1',
         email='abc@example.com',
         password='abcdefg',
-        role=20,
-        company=company
+        role=20
     )
     yield User(
         name='Jack Lee',
@@ -34,9 +32,11 @@ def iter_users():
 
 
 def iter_companies():
+    user = User.query.filter_by(name='ABC').first()
     yield Company(
         location='Beijing',
-        logo='test'
+        logo='test',
+        user=user
     )
         
 def iter_jobs():
@@ -54,11 +54,12 @@ def iter_jobs():
 
 
 def run(): 
+    for user in iter_users():
+        db.session.add(user)
+    
     for company in iter_companies():
         db.session.add(company)   
     
-    for user in iter_users():
-        db.session.add(user)
 
     for job in iter_jobs():
         db.session.add(job)

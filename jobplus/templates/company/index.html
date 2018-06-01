@@ -20,11 +20,13 @@
         {% for company in pagination.items %}    
         <div class="col-sm-6 col-md-3 user-item">
           <div class="thumbnail">
-              <img src="{{ company.company_detail.logo }}" width="100" height="100" alt="...">
-              <h3>{{ company.name }}</h3>
-              <p>{{ company.company_detail.field }}</p>
-          <hr>
-          <p>在招职位：</p>
+              <img src="{{ company.logo }}" width="100" height="100" alt="...">
+              <a href="{{ company.url }}" target="_blank">
+                  <h4 class="company__name">{{ company.user.name }}</h4>
+              </a>
+              <p>{{ company.site }}</p>
+              <p>{{ company.description }}</p>
+              <p>{{ company.location }}</p>
           </div>
         </div>
         {% endfor %}

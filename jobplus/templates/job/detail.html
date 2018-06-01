@@ -1,5 +1,54 @@
-{%extends "base.html" %}
+{% extends "base.html" %}
 
 {% block title %}
-职位详情 - {{ job.title }}
+职业详情 - {{ job.title }}
+{% endblock %}
+
+{% block body %}
+    <div class="wrap">
+        <div class="post-topheader">
+            <div class="container">
+                <div class="block-for-right-border">
+                    <div class="row">
+                        <div class="col-md-9 col-xs-12">
+                            <div class="job-detail__job-info">
+                                <h3 class="post-topheader__info--title">
+                                    <a href="{{ job.url }}">{{ job.title }}</a>
+                                </h3>
+                                <ul class="job-detail__requirements">
+                                    <li class="salary"><span>{{ job.salary }}</span></li>
+                                    <li class="cities">{{ job.location }}</li>
+                                    <li>{{ job. experience }}</li>
+                                    <li><span class="ml5 inline-block"></span></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container job-detail__detail">
+        <div class="row">
+            <div class="col-xs-12 col-md-9 main mt30">
+                <div class="fmt">
+                    <h4 class="job-detail__heading--catalog">职位描述</h4>
+                    <ol><li> TBD </li></ol>
+                    <h4 class="job-detail__heading--catalog">职位要求</h4>
+                    <ol><li> TBD </li></ol>
+                </div>
+                <p class="mt20 text-muted">发布于{{ job.created_at }}</p>
+                <div class="bg-gray job-detail__foot">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <a href="/job/{{ job.id }}/apply" class="btn btn-primary btn-lg submit-resume">投简历
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
 {% endblock %}

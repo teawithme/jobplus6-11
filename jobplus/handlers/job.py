@@ -1,5 +1,7 @@
 from flask import Blueprint, render_template, redirect, url_for, request, current_app
 from jobplus.models import db, Job
+from flask_login import current_user
+from jobplus.forms import LoginForm
 
 job = Blueprint('job', __name__, url_prefix='/job')
 
@@ -17,3 +19,12 @@ def index():
 def detail(job_id):
     job = Job.query.get_or_404(job_id)
     return render_template('job/detail.html', job=job)
+
+@job.route('/<int:job_id>/apply')
+def apply(job_id):
+    if current_user.is_authenticated:
+        
+        return render_template("job/detail.html", job=job)
+    else:
+        form = LoginForm()
+        return render_template("login.html", form=form)

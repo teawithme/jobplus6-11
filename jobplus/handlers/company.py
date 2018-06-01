@@ -1,6 +1,6 @@
 #-*- coding:utf-8 -*-#
 
-from flask import render_template,url_for,Blueprint,flash,redirect,request
+from flask import render_template,url_for,Blueprint,flash,redirect,request, current_app
 from flask_login import login_required, current_user
 from jobplus.models import User,Company
 from jobplus.forms import CompanyForm
@@ -24,15 +24,21 @@ def profile():
 @company.route('/', methods=['GET'])
 def index():
     page = request.args.get('page', default=1, type=int)
+    pagination = Company.query.paginate(
+            page=page,
+            per_page=current_app.config['INDEX_PER_PAGE'],
+            error_out=False)
+    
     #使用try来防止在没有建立数据库的情况下访问网页引发的错误
-    try:
-        pagination = User.query.filter(User.role==User.ROLE_COMPANY).order_by(User.created_at.desc()).paginate(
-                page=page,
-                per_page=12,
-                error_out=False
-                )
-    except:
-        return '<h2>No any data here</h2>'
+    #for future use
+    #try:
+    #    pagination = User.query.filter(User.role==User.ROLE_COMPANY).order_by(User.created_at.desc()).paginate(
+     #           page=page,
+      #          per_page=12,
+       #         error_out=False
+        #        )
+    #except:
+     #   return '<h2>No any data here</h2>'
     return render_template('company/index.html', pagination=pagination)
 
 @company.route('/<int:company_id>')
