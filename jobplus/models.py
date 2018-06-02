@@ -19,8 +19,10 @@ class User_job(Base):
     __tablename__ = 'user_job'
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), primary_key=True)
     job_id = db.Column(db.Integer, db.ForeignKey('job.id'), primary_key=True)
-    job = db.relationship("Job", backref="users")
-    user = db.relationship("User", backref="jobs")
+    #job = db.relationship("Job")
+    job_applied = db.relationship('Job', uselist=False, backref=db.backref('users', uselist=False))
+   
+    #user = db.relationship("User", backref="jobs")
 
 
 class User(Base, UserMixin):
@@ -42,7 +44,7 @@ class User(Base, UserMixin):
     resume_url = db.Column(db.String(256), unique=True)
     company_detail = db.relationship('Company')
     is_disable = db.Column(db.Boolean, default=False)
-    #jobs = db.relationship('User_job', backref='user')
+    #jobs = db.relationship('User_job', backref=db.backref('user', uselist=False))
     
     def __repr__(self):
         return '<User:{}>'.format(self.username, uselist=False)
@@ -76,7 +78,7 @@ class Job(Base):
     location = db.Column(db.String(128), nullable=False)
     company_id = db.Column(db.Integer, db.ForeignKey('company.id', ondelete='CASCADE'))
     company = db.relationship('Company', uselist=False)
-    #users = db.relationship('User_job', backref='job')
+    #users = db.relationship('User_job')
      
     @property
     def url(self):
@@ -101,7 +103,7 @@ class Company(Base):
     welfares = db.Column(db.String(256))
     user_id = db.Column(db.Integer, db.ForeignKey('user.id', ondelete='SET NULL'))
     user = db.relationship('User', uselist=False, backref=db.backref('company', uselist=False))
-    jobs = db.relationship('Job')
+    #jobs = db.relationship('Job')
 
     @property
     def url(self):

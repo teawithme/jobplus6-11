@@ -41,13 +41,12 @@
                 <p class="mt20 text-muted">发布于{{ job.created_at }}</p>
                 <div class="bg-gray job-detail__foot">
                     <div class="row">
-                        <div class="col-md-6">
-<<<<<<< HEAD
-                            <a href="/job/{{ job.id }}/apply" {% if not is_applied %} class="btn btn-primary btn-lg submit-resume"{% else %}class="btn btn-primary btn-lg submit-resume disabled"{% endif %}>投简历</a>
-=======
-                            <a href="/job/{{ job.id }}/apply" class="btn btn-primary btn-lg submit-resume">投简历
-                            </a>
->>>>>>> upstream/master
+                        <div class="col-md-6">                          
+                            {% if job.users.job_id != job.id %}
+                            <a href="/job/{{ job.id }}/apply" class="btn btn-primary btn-lg submit-resume">投简历</a>
+                            {% else %}
+                            <a href="#" class="btn btn-primary btn-lg submit-resume disabled">投简历</a>
+                            {% endif %}
                         </div>
                     </div>
                 </div>
