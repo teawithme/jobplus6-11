@@ -1,42 +1,27 @@
 import os
 import json
 from random import randint
-#from faker import Faker
+from faker import Faker
 from jobplus.models import db, User, Job, Company, User_job
 
-#fake = Faker()
+fake = Faker()
 
+user_lst = [
+            ['admin', 'admin', 'admin@jobplus.com', 'jobplus', 30],
+            ['ABC', 'company1', 'abc@example.com', 'jobplus', 20],
+            ['Jack Lee', 'user1', 'jacklee@example.com', 'jobplus', 30],
+            ['Jack Ma', 'user2', 'jackma@example.com', 'jobplus', 10]
+           ]
 
 def iter_users():
-    yield User(
-        name='admin',
-        username='admin',
-        email='admin@jobplus.com',
-        password='jobplus',
-        role=30
+    for user in user_lst:
+        yield User(
+            name=user[0],
+            username=user[1],
+            email=user[2],
+            password=user[3],
+            role=user[4]
     )
-    yield User(
-        name='ABC',
-        username='company1',
-        email='abc@example.com',
-        password='abcdefg',
-        role=20
-    )
-    yield User(
-        name='Jack Lee',
-        username='user1',
-        email='jacklee@example.com',
-        password='protream',
-        role=10
-    )
-    yield User(
-        name='Jack Ma',
-        username='user2',
-        email='jackma@example.com',
-        password='taobao',
-        role=10
-    )
-
 
 def iter_companies():
     user = User.query.filter_by(name='ABC').first()
@@ -68,6 +53,7 @@ def iter_user_jobs():
     )
  
 def run(): 
+    db.create_all()
     for user in iter_users():
         db.session.add(user)
     

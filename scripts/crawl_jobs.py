@@ -12,6 +12,6 @@ class JobsSpider(scrapy.Spider):
             yield {
                 'title': job.xpath('.//a[@class="job-name nowrap"]/text()').extract_first().strip(),
                 'location': job.xpath('.//span[@class="text-muted job-list-item-block-city"]/text()').extract_first().strip(),
-                'experience': job.xpath('.//div[@class="text-muted job-require"]/text()').extract_first().strip(),
+                'experience': job.xpath('.//div[@class="text-muted job-require"]').extract_first().split('/')[2].strip(),
                 'salary': job.xpath('.//div[@class="text-muted job-require"]/strong/text()').extract_first().strip()
             }
