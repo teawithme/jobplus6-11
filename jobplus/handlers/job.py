@@ -1,7 +1,7 @@
 from flask import Blueprint, render_template, redirect, url_for, request, current_app
 from jobplus.models import db, Job, User_job
 from jobplus.models import db, Job
-from flask_login import current_user
+from flask_login import current_user,login_required
 from jobplus.forms import LoginForm
 
 job = Blueprint('job', __name__, url_prefix='/job')
@@ -36,3 +36,11 @@ def apply(job_id):
     else:
         form = LoginForm()
         return render_template("login.html", form=form)
+
+@job.route('<int:job_id>/enable', methods=['GET', 'POST'])
+@login_required
+def enable_job(job_id):
+    job = Job.query.get_or_404(job_id)
+    if current_user.role < 20:
+        return ''
+    

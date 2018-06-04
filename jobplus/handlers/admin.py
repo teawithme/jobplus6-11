@@ -3,7 +3,7 @@
 from flask import Blueprint, render_template,url_for,request, redirect, flash
 #from flask_login import current_user
 from jobplus.decorators import admin_required
-from jobplus.models import db,User
+from jobplus.models import db,User,Job
 from jobplus.forms import UserForm, UserRegisterForm, CompanyRegisterForm, CompanyEditForm, UserEditForm
 
 admin = Blueprint('admin', __name__, url_prefix='/admin')
@@ -73,3 +73,13 @@ def disable_user(user_id):
     db.session.add(user)
     db.session.commit()
     return redirect(url_for('admin.users'))
+
+@admin.route('/jobs')
+@admin_required
+def jobs():
+    page = request.args.get('page', 1, type=int)
+    pagination = Job.query.paginate(
+            page=page,
+            per_page=20,
+            error_out=False)
+    return render_template('admin/jobs.html', pagination=pagination)

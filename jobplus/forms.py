@@ -1,7 +1,8 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField,PasswordField,SubmitField,BooleanField,IntegerField,ValidationError, SelectField
+from wtforms import StringField,PasswordField,SubmitField,BooleanField,\
+                    IntegerField,ValidationError,SelectField,DateTimeField
 from wtforms.validators import Length, Email, Required, EqualTo, NumberRange, URL
-from jobplus.models import db, User, Company
+from jobplus.models import db, User, Company, Job
 
 class LoginForm(FlaskForm):
     email=StringField('邮箱',validators=[Required(),Email()])
@@ -181,3 +182,11 @@ class UserEditForm(FlaskForm):
         user.password = self.password.data
         db.session.add(user)
         db.session.commit()
+
+class JobForm(FlaskForm):
+    id = IntegerField('ID', validators=[Required()])
+    name = StringField('Job Name', validators=[Required(), Length(3, 24)])
+    company = StringField('Company Name', validators=[Required()])
+    published_at = DateTimeField('Time')
+    status = BooleanField('Status')
+

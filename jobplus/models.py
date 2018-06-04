@@ -76,6 +76,7 @@ class Job(Base):
     salary = db.Column(db.String(32), nullable=False)
     experience = db.Column(db.String(128), default='经验不限')
     location = db.Column(db.String(128), nullable=False)
+    is_disable = db.Column(db.Boolean, default=False)
     company_id = db.Column(db.Integer, db.ForeignKey('company.id', ondelete='CASCADE'))
     company = db.relationship('Company', uselist=False)
     #users = db.relationship('User_job')

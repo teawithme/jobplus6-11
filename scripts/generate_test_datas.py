@@ -1,13 +1,13 @@
 import os
 import json
 from random import randint
-from faker import Faker
+#from faker import Faker
 from jobplus.models import db, User, Job, Company, User_job
 
-fake = Faker()
+#fake = Faker()
 
 user_lst = [
-            ['admin', 'admin', 'admin@jobplus.com', 'jobplus', 30],
+            ['admin', 'admin', 'admin@example.com', 'jobplus', 30],
             ['ABC', 'company1', 'abc@example.com', 'jobplus', 20],
             ['Jack Lee', 'user1', 'jacklee@example.com', 'jobplus', 30],
             ['Jack Ma', 'user2', 'jackma@example.com', 'jobplus', 10]
